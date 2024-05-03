@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RAFS.Core.Models
+
+@{
+    var profile = (AspUser)ViewBag.Profile;
+}
+
+@model UpdateInfoModel
+<head>
+    <script src="~/js/javascrip.js"></script>
+    <style>
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 2px
+        }
+    </style>
+</head>
+
+<table class="table table-borderless table-sm">
+    <tbody>
+        <tr>
+            <td class="required-field">Họ và tên:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="FullName" id="FullName" name="FullName" placeholder="Họ và tên" onkeydown="inputName(event)" value="@profile.FullName">
+            </td>
+        </tr>
+        <tr>
+            <td class="required-field">Email:</td>
+            <td>
+                <input type="email" class="form-control" asp-for="Email" id="Email" name="Email" placeholder="Địa chỉ Email" onkeydown="inputEmailAddress(event)" value="@profile.Email">
+            </td>
+        </tr>
+        <tr>
+            <td class="required-field">Số điện thoại:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="PhoneNumber" id="PhoneNumber" name="PhoneNumber" placeholder="Số điện thoại" onkeydown="inputNumber(event)" value="@profile.PhoneNumber">
+            </td>
+        </tr>
+        <tr>
+            <td>Địa chỉ:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="Address" id="Address" name="Address" placeholder="Địa chỉ" maxlength="50" value="@profile.Address">
+            </td>
+        </tr>
+        <tr>
+            <td>Mô tả:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="Description" id="Description" name="Description" maxlength="200" placeholder="Mô tả" value="@profile.Description">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<script src="~/js/userValidation.js"></script>

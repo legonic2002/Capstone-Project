@@ -1,0 +1,632 @@
+﻿
+@{
+    Layout = "_DashboardLayout";
+}
+<link href="~/css/style.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/Assets/Dashboard/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+    .card.draggable {
+        margin-bottom: 1rem;
+        cursor: grab;
+    }
+
+    .droppable {
+        background-color: var(--success);
+        min-height: 120px;
+        margin-bottom: 1rem;
+    }
+
+    .dropzone {
+        border: 0px solid #CED4DA;
+        min-height: 0px;
+    }
+
+    .scrollable-container {
+        overflow-x: auto;
+        white-space: nowrap;
+      
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Nunito';
+        box-sizing: border-box;
+    }
+
+    #qrcode img{
+        width:150px;
+        height: 150px;
+    }
+
+    .notifications {
+        z-index: 10040;
+    }
+
+    * {
+        font-family: "Nunito", sans-serif;
+    }
+
+    .dropdown-content-forbody {
+        display: none;
+    }
+</style>
+
+<link href="~/css/plantDetail.css" rel="stylesheet" />
+
+<div class="scrollable-container">
+    <div style="margin-top: 50px" class="notifications">
+    </div>
+<div class="container-fluid pt-3">
+        <div style="display:flex;">
+            <div style="  width: 40%;">
+                <h3 style="color:black;" class="font-weight-light ">Quản lý Cây Trồng </h3>
+                <div style="color:black;" class="small ">Có thể kéo thả giữa các cột</div>
+            </div>
+            <div>
+                <a href="#popup" style="max-height: 60px; width:150px;">
+                    <button class="button3 pure2" style="    margin-right: 8px; max-height: 60px;padding-top: 7px;">
+                        Tạo mới
+                    </button>
+                </a>
+            </div>
+            <div style=" margin: auto;min-width: 50px;width: 50%; margin-right:10px; border-radius: 10px">
+                <input onchange="validateInput('searchName')" style=" min-width: 50px; border-radius: 10px" class="form-control form-control-sm" type="text" id="searchName" placeholder="Nhập tên cây cần tìm " />
+            <div id="search-toast" style="color: red; font-size: 12px;"></div>
+            </div>
+            <select id="healFilter" style=" margin: auto;min-width: 50px;width: 25%; margin-right:10px; border-radius: 10px" class="form-control form-control-sm">
+                <option value="0" selected>Tất cả trạng thái</option>
+                <option value="Bình thường">Bình thường</option>
+                <option value="Tốt">Tốt</option>
+                <option value="Xấu">Xấu</option>
+            </select>
+            <div style=" margin: auto; min-width: 50px;width: 50%; margin-right:10px;">
+
+                <input onchange="validateInput('typeFilter')" id="typeFilter" style=" width: 100%; border-radius: 10px" class="form-control form-control-sm" placeholder="Tìm theo phương pháp " />
+                <div id="typeFilter-toast" style="color: red; font-size: 12px;"></div>
+
+            </div>
+            <button id="sortBtn" type="button" style=" max-height: 60px;" class="btn btn-primary">Lọc</button>
+            <button id="resetBtn" type="button" style="background-color:blue; max-height: 60px;" class="btn btn-primary">Đặt lại</button>
+            
+        </div>
+    <div class="row flex-row flex-sm-nowrap py-3" style="min-height:800px;">
+    </div>
+</div>
+</div>
+<div class="wrapper">
+    <div class="popup" id="popup">
+        <div class="popup__content">
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tạo cây mới</h4>
+
+                        <form class="forms-sample">
+
+                            <div class="form-group row">
+                                <label for="milestoneId" class="col-sm-3 col-form-label">Nhóm</label>
+                                <div class="col-sm-9">
+                                    <select id="milestoneId">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-3 col-form-label">Tên cây</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="name" placeholder="Tên cây" onchange="validateInput('name')" />
+
+                                    <div id="name-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="type" class="col-sm-3 col-form-label">Loại cây</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="type" placeholder="Loại cây" onchange="validateInput('type')" />
+                                    <div id="type-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="description" class="col-sm-3 col-form-label">Mô tả</label>
+                                <div class="col-sm-9">
+                                    <textarea onchange="validateInput('description')" style="height: 200px; min-height: 100%; overflow-y: auto;" class="form-control" id="description" placeholder="Mô tả"></textarea>
+                                    <div id="description-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="area" class="col-sm-3 col-form-label">Diện tích</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="area" placeholder="Diện tích" onchange="validateInput('area')" />
+                                    <div id="area-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="areaUnit" class="col-sm-3 col-form-label">Đơn vị</label>
+                                <div class="col-sm-9">
+                                    <select id="areaUnit">
+                                        <option value="m2">m2</option>
+                                        <option value="ha">ha</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="healthCondition" class="col-sm-3 col-form-label">Tình trạng sức khỏe</label>
+                                <div class="col-sm-9">
+                                   
+                                    <select id="healthCondition">
+                                        <option value="1">Tốt</option>
+                                        <option value="2">Bình thường</option>
+                                        <option value="3">Xấu</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="plantingMethod" class="col-sm-3 col-form-label">Phương pháp trồng</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="plantingMethod" placeholder="Phương pháp trồng" onchange="validateInput('plantingMethod')" />
+                                    <div id="plantingMethod-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="image" class="col-sm-3 col-form-label">Ảnh</label>
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" id="image" placeholder="Ảnh" />
+                                    <div id="image-toast" style="color: red; font-size: 12px;"></div>
+
+                                </div>
+                            </div>
+
+                            <label id="add" class="btn btn-primary mr-2">Thêm</label>
+                            <a href="#" class="btn btn-light">Thoát</a>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="popup" id="popup2">
+        <div class="popup__content">
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cập nhật cây</h4>
+
+                        <form class="forms-sample">
+                            
+                                    <input type="text" class="form-control" id="id2" placeholder="Id cây" hidden  />
+                                
+
+                            <div class="form-group row">
+                                <label for="milestoneId2" class="col-sm-3 col-form-label">Nhóm</label>
+                                <div class="col-sm-9">
+                                    <select id="milestoneId2">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name2" class="col-sm-3 col-form-label">Tên</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="name2" placeholder="Tên cây" onchange="validateInput('name2')" />
+                                    <div id="name2-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="type2" class="col-sm-3 col-form-label">Loại</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="type2" placeholder="Loại cây" onchange="validateInput('type2')" />
+                                    <div id="type2-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="description2" class="col-sm-3 col-form-label">Mô tả</label>
+                                <div class="col-sm-9">
+                                    <textarea onchange="validateInput('description2')" style="height: 200px; min-height: 100%; overflow-y: auto; resize: vertical;" class="form-control" id="description2" placeholder="Mô tả về cây"></textarea>
+                                    <div id="description2-toast" style="color: red; font-size: 12px;"></div>
+                            </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="area2" class="col-sm-3 col-form-label">Diện tích</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="area2" placeholder="Diện tích trồng cây" onchange="validateInput('area2')" />
+                                    <div id="area2-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="areaUnit2" class="col-sm-3 col-form-label">Đơn vị</label>
+                                <div class="col-sm-9">
+                                    <select id="areaUnit2">
+                                        <option value="m2">m2</option>
+                                        <option value="ha">ha</option>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="healthCondition2" class="col-sm-3 col-form-label">Tình trạng sức khỏe</label>
+                                <div class="col-sm-9">
+
+                                    <select id="healthCondition2">
+                                        <option value="1">Tốt</option>
+                                        <option value="2">Bình thường</option>
+                                        <option value="3">Xấu</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="plantingMethod2" class="col-sm-3 col-form-label">Phương pháp trồng</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="plantingMethod2" placeholder="Phương pháp trồng cây" onchange="validateInput('plantingMethod2')" />
+                                    <div id="plantingMethod2-toast" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+
+                            <label id="update" class="btn btn-primary mr-2">Lưu</label>
+                            <a href="#" class="btn btn-light">Thoát</a>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Bạn có chắc muốn xóa nhóm này không?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    
+                    <tbody id="plantlist">
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex;">
+                <div></div>
+                <div class="modal-footer">
+                    <button style="background-color:red;" type="button" class="btn btn-default" id="deletebtn" data-dismiss="modal">Xóa</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Thông tin của cây trồng</h5>
+                <button type="button" id="topClose" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group row">
+                        <!-- Image column -->
+                        <div class="col-sm-4">
+                            <img id="image3" src="https://vuonhoaviet.vn/wp-content/uploads/2017/09/105.-Hoa-h%E1%BB%93ng-ngo%E1%BA%A1i-James-Galway.jpg"
+                                 class="rounded img-fluid" alt="...">
+                        </div>
+
+                        <!-- Input fields column -->
+                        <div class="col-sm-8">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="name3">Tên cây</label>
+                                    <input id="id3" value='1' hidden />
+                                    <input type="text" class="form-control" id="name3" readonly>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="type3">Loại cây</label>
+                                    <input type="text" class="form-control" id="type3" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="milestoneId3">Nhóm</label>
+                                    <select class="form-control" onchange="handleChangeMilestone(this)" style="    color: #212529;" name="cars" id="milestoneId3">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="area3">Diện tích (đơn vị)</label>
+                                    <input type="text" class="form-control" id="area3" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="healthCondition3">Tình trạng</label>
+                                    <select class="form-control" onchange="handleChangeHeal(this)" style="    color: #212529;" id="healthCondition3">
+                                        <option value="1">Tốt</option>
+                                        <option value="2">Bình thường</option>
+                                        <option value="3">Xấu</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="plantingMethod3">Phương pháp trồng</label>
+                                    <input type="text" class="form-control" id="plantingMethod3" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="description3">Mô tả:</label>
+                                    <textarea class="form-control" id="description3" readonly></textarea>
+                                    <label for="description3">Sửa ảnh     :</label>
+                                    <input type="file" onchange="displaySelectedImage(event)" class="form-control" id="image2" placeholder="Mobile number" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Mã QR:</label>
+                                    <div onclick="printQRCode()" id="qrcode"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <h2 style="margin-bottom: 20px;">Số liệu của cây</h2>
+                <button type="button" id="phan" class="btn btn-success">Phân bón</button>
+                <button type="button" id="thuoc" class="btn btn-success">Thuốc</button>
+                <button type="button" id="qua" class="btn btn-success">Thu hoạch</button>
+                <button type="button" id="nhat" class="btn btn-success">Nhật ký</button>
+
+                <div style="margin-top: 20px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                        <h3 class="card-title" id="titlereport">Số liệu hoạt động sử dụng phân bón</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="selecttype" style="color: #212529;" onchange="handleChange(this)">
+                            <option value="1">Ngày</option>
+                            <option value="2">Tuần</option>
+                                <option value="3">Tháng</option>
+                        </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button style="min-width: 75px;width: 100%; padding: 1rem 1.5rem 1rem 1.5rem;" type="button" id="redirectbtn" class="btn btn-secondary">Quản lý</button>
+                        </div>
+                    </div>
+
+                    <div class="popup-section">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="fold-table" id="fold-table">
+                                    <tr class="view" hidden>
+                                        <td> test</td>
+                                    </tr>
+                                    <tr class="fold" hidden>
+                                        <td colspan="7">
+                                            <div class="fold-content">
+                                                <h3>Company Name</h3>
+                                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                                                <table class="small-friendly">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><span class="visible-small" title="Company name"></span><span class="visible-big"></span></th>
+                                                            <th><span class="visible-small" title="Customer number"></span><span class="visible-big"></span></th>
+                                                            <th><span class="visible-small" title="Customer name"></span><span class="visible-big"></span></th>
+                                                            <th><span class="visible-small" title="Insurance number"></span><span class="visible-big"></span></th>
+                                                            <th><span class="visible-small" title="Strategy"></span><span class="visible-big"></span></th>
+                                                            <th>Start</th>
+                                                            <th><span class="visible-small" title="Current"></span><span class="visible-big"></span></th>
+                                                            <th>Diff</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td data-th="Company name">Sony</td>
+                                                            <td data-th="Customer no">13245</td>
+                                                            <td data-th="Customer name">John Doe</td>
+                                                            <td data-th="Insurance no">064578</td>
+                                                            <td data-th="Strategy">A, 100%</td>
+                                                            <td data-th="Start"><span class="cur">20 000</span></td>
+                                                            <td data-th="Current"><span class="cur">33 000</span></td>
+                                                            <td data-th="Diff"><span class="cur">13 000</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Timeline 1 - Bootstrap Brain Component -->
+
+                <section class="bsb-timeline-1 py-5 py-xl-8">
+                    <h2 style="margin-bottom: 20px;">Nhật ký trồng cây</h2>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+
+                            <div style="width:100%;" id="wrapper" class="wrapper hidden">
+
+                                <header id="headerrecord" style=" background-image: url('https://t4.ftcdn.net/jpg/03/69/11/25/360_F_369112549_7TaHV9HV6QEWIauBBJGaW7DnLd7nibkf.jpg');background-repeat: no-repeat;background-size: cover;width:100%;" class="module-location">
+                                    <ul class="location-quickstats">
+                                        <li id="num1" class="rating-medica">
+                                            <i>Negative: </i>
+                                            <span>27</span>
+                                        </li>
+                                        <li id="num2" class="rating-fertilizer">
+                                            <i>Positive: </i>
+                                            <span>82</span>
+                                        </li>
+                                        <li id="num3" class="rating-harverst">
+                                            <i>Negative: </i>
+                                            <span>27</span>
+                                        </li>
+
+                                        <li id="num4" class="rating-day">
+                                            <i>Negative: </i>
+                                            <span>27</span>
+                                        </li>
+                                        <li id="num5" class="rating-week">
+                                            <i>Positive: </i>
+                                            <span>82</span>
+                                        </li>
+                                        <li id="num6" class="rating-month">
+                                            <i>Negative: </i>
+                                            <span>27</span>
+                                        </li>
+
+                                        <li id="totalnum" class="rating-total">
+                                            <i>Negative: </i>
+                                            <span>109</span>
+                                        </li>
+                                    </ul>
+                                    <div class="radios row">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio1" name="radio" >
+                                            <label class="labelradio" for="radio1">
+                                                <div class="checker"></div>
+                                                Báo cáo thu hoạch
+
+                                            </label>
+                                        </div>
+
+                                        <div class=" col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio2" name="radio">
+                                            <label class="labelradio" for="radio2">
+                                                <div class="checker"></div>
+                                                Báo cáo phân bón
+
+                                            </label>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio3" name="radio">
+                                            <label class="labelradio" for="radio3">
+                                                <div class="checker"></div>
+                                                Báo cáo thuốc
+
+                                            </label>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio4" name="radio">
+                                            <label class="labelradio" for="radio4">
+                                                <div class="checker"></div>
+                                                Nhật ký ngày
+
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio5" name="radio">
+                                            <label class="labelradio" l for="radio5">
+                                                <div class="checker"></div>
+                                                Nhật ký tuần
+
+                                            </label>
+                                        </div>
+                                        <div class=" col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio6" name="radio">
+                                            <label class="labelradio" for="radio6">
+                                                <div class="checker"></div>
+                                                Nhật ký tháng
+
+                                            </label>
+                                        </div>
+                                        <div class=" col-lg-2 col-md-6 col-sm-6 radio">
+                                            <input type="radio" id="radio10" name="radio" checked>
+                                            <label class="labelAll" for="radio10">
+                                                <div class="checker2"></div>
+                                                Tất cả bản ghi
+                                            </label>
+                                        </div>
+                                    </div>
+                                </header>
+                                <ul style="width:100%;" class="module-history" id="listrecord">
+                                    <li class="rating-negative memo-yep">
+                                        <h3>Book a flight to Melbourne</h3>
+                                        <time>5 minutes ago</time>
+                                        <i>Has a memo attached</i>
+                                    </li>
+                                    <li class="rating-positive memo-yep1">
+                                        <h3>Grab some last Pad Thai w/ Yi</h3>
+                                        <time>35 minutes ago</time>
+                                        <i></i>
+                                    </li>
+                                    <li class="rating-positive memo-yep2">
+                                        <h3>Clear desk at Pun Space</h3>
+                                        <time>1 hour ago</time>
+                                        <i></i>
+                                    </li>
+
+                                    <li style="padding-top:5%; padding-bottom:10%;  color:white; background-image: url('https://t4.ftcdn.net/jpg/03/69/11/25/360_F_369112549_7TaHV9HV6QEWIauBBJGaW7DnLd7nibkf.jpg');background-repeat: no-repeat;background-size: cover;width:100%;"
+                                        class="location-title rating-positive memo-yep">
+                                        <h2>Book a flight to Melbourne</h2>
+                                        <timer>5 minutes ago</timer>
+                                        <i>Has a memo attached</i>
+                                    </li>
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closemodalbtn" data-dismiss="modal">Đóng</button>
+              
+            </div>
+        </div>
+    </div>
+</div>
+<input id="checkload" value="0" hidden />
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="~/js/plantmanagement/api.js"></script>
+    <script src="~/js/plantmanagement/action.js"></script>
+    <script>
+
+        
+
+        let qrcode = new QRCode("qrcode");
+
+    </script>
+

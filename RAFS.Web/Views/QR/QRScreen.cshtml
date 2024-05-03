@@ -1,0 +1,393 @@
+﻿
+@{
+    Layout = "_QRLayout";
+}
+<style>
+    @@media (max-width: 880px) {
+    .radios {
+        display: block;
+    }
+    .module-location {
+        min-height: 390px;
+    }
+}
+</style>
+<div class="popup-section">
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+
+
+            <div style="width:100%;" id="wrapper" class="wrapper ">
+
+                <header id="headerrecord" style=" background-image: url('https://t4.ftcdn.net/jpg/03/69/11/25/360_F_369112549_7TaHV9HV6QEWIauBBJGaW7DnLd7nibkf.jpg');background-repeat: no-repeat;background-size: cover;width:100%;" class="module-location">
+                    <ul class="location-quickstats">
+                        <li id="num1" class="rating-medica">
+                            <i>Negative: </i>
+                            <span>27</span>
+                        </li>
+                        <li id="num2" class="rating-fertilizer">
+                            <i>Positive: </i>
+                            <span>82</span>
+                        </li>
+                        <li id="num3" class="rating-harverst">
+                            <i>Negative: </i>
+                            <span>27</span>
+                        </li>
+                        <li id="num4" class="rating-day">
+                            <i>Negative: </i>
+                            <span>27</span>
+                        </li>
+                        <li id="num5" class="rating-week">
+                            <i>Positive: </i>
+                            <span>82</span>
+                        </li>
+                        <li id="num6" class="rating-month">
+                            <i>Negative: </i>
+                            <span>27</span>
+                        </li>
+
+                        <li id="totalnum" class="rating-total">
+                            <i>Negative: </i>
+                            <span>109</span>
+                        </li>
+                    </ul>
+                    <div class="radios row">
+                        <div class="col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio1" name="radio" >
+                            <label for="radio1">
+                                <div class="checker"></div>
+                                Báo cáo thu hoạch 
+                            </label>
+                        </div>
+
+                        <div class=" col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio2" name="radio">
+                            <label for="radio2">
+                                <div class="checker"></div>
+                                Báo cáo phân bón
+                            </label>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio3" name="radio">
+                            <label for="radio3">
+                                <div class="checker"></div>
+                                Báo cáo thuốc
+                            </label>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio4" name="radio">
+                            <label for="radio4">
+                                <div class="checker"></div>
+                                Nhật ký ngày
+                            </label>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio5" name="radio">
+                            <label for="radio5">
+                                <div class="checker"></div>
+                                Nhật ký tuần
+                            </label>
+                        </div>
+                        <div class=" col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio6" name="radio">
+                            <label for="radio6">
+                                <div class="checker"></div>
+                               Nhật ký tháng
+                            </label>
+                        </div>
+                        <div class=" col-lg-2 col-md-4 col-sm-6 radio">
+                            <input type="radio" id="radio10" name="radio" checked>
+                            <label class="labelAll" for="radio10">
+                                <div class="checker2"></div>
+                                Tất cả bản ghi
+                            </label>
+                        </div>
+                    </div>
+                </header>
+                <ul style="width:100%;" class="module-history" id="listrecord">
+                    <li class="rating-negative memo-yep">
+                        <h3>Book a flight to Melbourne</h3>
+                        <time>5 minutes ago</time>
+                        <i>Has a memo attached</i>
+                    </li>
+                    <li class="rating-positive memo-yep1">
+                        <h3>Grab some last Pad Thai w/ Yi</h3>
+                        <time>35 minutes ago</time>
+                        <i></i>
+                    </li>
+                    <li class="rating-positive memo-yep2">
+                        <h3>Clear desk at Pun Space</h3>
+                        <time>1 hour ago</time>
+                        <i></i>
+                    </li>
+
+                    <li style="padding-top:5%; padding-bottom:10%;  color:white; background-image: url('https://t4.ftcdn.net/jpg/03/69/11/25/360_F_369112549_7TaHV9HV6QEWIauBBJGaW7DnLd7nibkf.jpg');background-repeat: no-repeat;background-size: cover;width:100%;"
+                        class="location-title rating-positive memo-yep">
+                        <h2>Book a flight to Melbourne</h2>
+                        <timer>5 minutes ago</timer>
+                        <i>Has a memo attached</i>
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+    <script>
+
+
+
+
+        $(document).ready(function () {
+
+
+            Manager.GetAllRecord();
+            // Add event listener to the button
+            
+
+
+        })
+        function checkParameter() {
+            // Get the URL parameters
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+            // Get the value of the parameter you're interested in
+            const paramValue = urlParams.get('plantid');
+
+            // Check if the parameter has a value
+            if (paramValue !== null && paramValue !== '') {
+                return paramValue;
+                // Do something with the parameter value, e.g., validate, process, etc.
+            } else {
+                return 0;
+            }
+        }
+        var Manager = {
+            GetAllRecord: function () {
+                var element = document.getElementById("radio1");
+                element.disabled = true;
+                element = document.getElementById("radio2");
+                element.disabled = true;
+                element = document.getElementById("radio3");
+                element.disabled = true;
+                element = document.getElementById("radio4");
+                element.disabled = true;
+                element = document.getElementById("radio5");
+                element.disabled = true;
+                element = document.getElementById("radio6");
+                element.disabled = true;
+                element = document.getElementById("radio10");
+                element.disabled = true;
+                
+                var obj = "";
+
+                var serviceUrl = baseUrl + "QR/GetPlantRecord?plantid=" + checkParameter();
+                window.Manager.GetAPI(serviceUrl, onSuccess, onFailed);
+
+                function onSuccess(jsonData) {
+
+                    obj = jsonData;
+                    var rows = "";
+                    var footer = "";
+                    var options = "";
+                    var header = "";
+                    var count1 = 0;
+                    var count2 = 0;
+                    var count3 = 0;
+                    var count4 = 0;
+                    var count5 = 0;
+                    var count6 = 0;
+                    $.each(jsonData.plantRecords, function (i, item) {
+                        var mydatetime = new Date(item.createdate);
+                        var optionstime = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric'
+                        };
+                        let texttime = mydatetime.toLocaleDateString('vi-VN', optionstime);
+                        if (item.type == 1) {
+                            footer += `<li style="padding-top:5%; padding-bottom:10%;  color:white; background-image: url('https://t4.ftcdn.net/jpg/03/69/11/25/360_F_369112549_7TaHV9HV6QEWIauBBJGaW7DnLd7nibkf.jpg');background-repeat: no-repeat;background-size: cover;width:100%;"
+                                                                                                class="location-title rating-positive memo-yepfooter">
+                                                                                                                <h2>${item.description}</h2>
+                                                                                                                <timer>${texttime}</timer>
+                                                                                                <i></i>
+                                                                                            </li>`;
+                        }
+                        if (item.type == 2) {
+                            header += ` <div class="location-title rating-negative memo-yep">
+                                                                                <h3>${item.description}</h3>
+                                                                                <time>${texttime}</time>
+                                                                <i>Đã Hủy</i>
+                                                            </div>`;
+
+                        }
+                        if (item.type == 3) {
+                            rows += "<li class='rating-negative memo-yep'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "</div>" +
+                                "</li>";
+                            count1++;
+                        }
+
+                        if (item.type == 4) {
+                            rows += "<li class='rating-positive memo-yep1'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "</div>" +
+                                "</li>";
+                            count2++;
+                        }
+                        if (item.type == 5) {
+                            rows += "<li class='rating-positive memo-yep2'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "</div>" +
+                                "</li>";
+                            count3++;
+                        }
+                        if (item.type == 6) {
+                            rows += "<li class='rating-negative memo-yep4'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i style='background-color: mediumspringgreen;'></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "<img style='width:70%;' src='" + item.image + "' alt='Your Image'>" +
+                                "</div>" +
+                                "</li>";
+                            count4++;
+                            console.log("co 6");
+                        }
+                        if (item.type == 7) {
+                            rows += "<li class='rating-negative memo-yep5'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i style='background-color: mediumspringgreen;'></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "<img  style='width:70%;' src='" + item.image + "' alt='Your Image'>" +
+                                "</div>" +
+                                "</li>";
+                            count5++;
+                            console.log("co 7");
+                        }
+                        if (item.type == 8) {
+                            rows += "<li class='rating-negative memo-yep6'>" +
+                                "<h3>" + item.description + "</h3>" +
+                                "<time>" + texttime + "</time>" +
+                                "<i style='background-color: mediumspringgreen;'></i>" +
+                                "<div style='display:none;'>" +
+                                "<p>" + item.body + "</p>" +
+                                "<img  style='width:70%;' src='" + item.image + "' alt='Your Image'>" +
+                                "</div>" +
+                                "</li>";
+                            count6++;
+                            console.log("co 8");
+                        }
+
+                    });
+                    $('#num1').html(` <i>Negative: </i> <span>${count1}</span>`);
+                    $('#num2').html(` <i>Negative: </i> <span>${count2}</span>`);
+                    $('#num3').html(` <i>Negative: </i> <span>${count3}</span>`);
+                    $('#num4').html(` <i>Negative: </i> <span>${count4}</span>`);
+                    $('#num5').html(` <i>Negative: </i> <span>${count5}</span>`);
+                    $('#num6').html(` <i>Negative: </i> <span>${count6}</span>`);
+                    $('#totalnum').html(` <i>Negative: </i> <span>${(count3 + count2 + count1 + count4 + count5 + count6)}</span>`);
+
+                    var id = '#listrecord';
+                    $(id).empty().append(rows);
+                    $(id).append(footer);
+                    id = '#headerrecord';
+                    $(id).append(header);
+                    $('.module-history > li').click(function () {
+                        var clickedDiv = $(this).find('div').first();
+                        $('.module-history > li').each(function () {
+                            var divToToggle = $(this).find('div').first();
+                            if (divToToggle[0] !== clickedDiv[0]) {
+                                divToToggle.hide();
+                            }
+                        });
+                        clickedDiv.toggle();
+                    });
+                    $('input[type="radio"]').change(function () {
+                        var radioId = $(this).attr('id');
+
+                        // Set hidden attribute to true for li elements that don't have the memo-yepfooter attribute already
+                        $('#listrecord li:not([memo-yepfooter])').attr('hidden', true);
+
+                        // Remove hidden attribute for corresponding li element based on radio button id
+                        if (radioId === 'radio1') {
+                            $('.memo-yep2').removeAttr('hidden');
+                        } else if (radioId === 'radio2') {
+                            $('.memo-yep1').removeAttr('hidden');
+                        } else if (radioId === 'radio3') {
+                            $('.memo-yep').removeAttr('hidden');
+                        }
+                         else if (radioId === 'radio4') {
+                            $('.memo-yep4').removeAttr('hidden');
+                        }
+                         else if (radioId === 'radio5') {
+                            $('.memo-yep5').removeAttr('hidden');
+                        }
+                        else if (radioId === 'radio6') {
+                            $('.memo-yep6').removeAttr('hidden');
+                        }
+                        else if (radioId === 'radio10') {
+                            $('#listrecord li:not([memo-yepfooter])').attr('hidden', false);
+                        }
+                        // Add more conditions for other radio buttons if needed
+                    });
+                    var element = document.getElementById("radio1");
+                    element.disabled = false;
+                    element = document.getElementById("radio2");
+                    element.disabled = false;
+                    element = document.getElementById("radio3");
+                    element.disabled = false;
+                    element = document.getElementById("radio4");
+                    element.disabled = false;
+                    element = document.getElementById("radio5");
+                    element.disabled = false;
+                    element = document.getElementById("radio6");
+                    element.disabled = false;
+                    element = document.getElementById("radio10");
+                    element.disabled = false;
+                }
+                function onFailed(error) {
+                    window.alert(error.statusText);
+                }
+            },
+            GetAPI: function (serviceUrl, successCallback, errorCallback) {
+                $.ajax({
+                    type: "GET",
+                    url: serviceUrl,
+                    dataType: "json",
+                    success: successCallback,
+                    error: errorCallback
+                });
+            }
+        }
+    </script>
+}

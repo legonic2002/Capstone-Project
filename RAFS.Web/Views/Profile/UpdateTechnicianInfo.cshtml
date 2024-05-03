@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RAFS.Core.Models
+
+@{
+    var profile = (AspUser)ViewBag.Profile;
+}
+
+@model UpdateTechnicianInfoModel
+<head>
+    <script src="~/js/javascrip.js"></script>
+</head>
+
+<table class="table table-borderless table-sm">
+    <tbody>
+        <tr>
+            <td>Họ và tên:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="FullName" id="TechFullName" name="FullName" placeholder="Họ và tên" onkeydown="inputName(event)" value="@profile.FullName">
+            </td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>
+                <input type="email" class="form-control" asp-for="Email" id="TechEmail" name="Email" placeholder="Địa chỉ Email" onkeydown="inputEmailAddress(event)" value="@profile.Email">
+            </td>
+        </tr>
+        <tr>
+            <td>Số điện thoại:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="PhoneNumber" id="TechPhoneNumber" name="PhoneNumber" placeholder="Số điện thoại" onkeydown="inputNumber(event)" value="@profile.PhoneNumber">
+            </td>
+        </tr>
+        <tr>
+            <td>Địa chỉ:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="Address" id="TechAddress" name="Address" placeholder="Địa chỉ" maxlength="50" value="@profile.Address">
+            </td>
+        </tr>
+        <tr>
+            <td>Mô tả:</td>
+            <td>
+                <input type="text" class="form-control" asp-for="Description" id="TechDescription" name="Description" maxlength="150" placeholder="Mô tả" value="@profile.Description">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<script src="~/js/userValidation.js"></script>

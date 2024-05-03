@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>RAFS-QR</title>
+    <link rel="shortcut icon" href="~/Assets/Dashboard/images/rafs.ico" />
+
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/styledetail.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="~/js/javascrip.js"></script>
+    <style>
+        .options-menu {
+            position: relative;
+            display: inline-block;
+            float: right; /* Di chuyển menu tùy chọn và dấu ba chấm sang bên phải */
+        }
+
+        .menu-trigger {
+            cursor: pointer;
+        }
+
+        .options-list {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 0;
+            min-width: 120px;
+            z-index: 1;
+            right: 0; /* Đảm bảo danh sách tùy chọn nằm ở phía bên phải */
+        }
+
+            .options-list.visible {
+                display: block;
+            }
+
+            .options-list li {
+                list-style: none;
+            }
+
+                .options-list li a {
+                    display: block;
+                    color: #333;
+                    text-decoration: none;
+                    padding: 8px 10px;
+                }
+
+                    .options-list li a:hover {
+                        background-color: #f4f4f4;
+                    }
+
+        .page-body-wrapper {
+            min-height: calc(100vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+            /* padding-top: 60px; */
+        }
+
+        td {
+            width: 10%;
+        }
+
+        .wrapper {
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            max-width: 100%;
+            z-index: 9999;
+            max-height: 100%;
+            /* Limiting maximum height */
+            overflow-y: auto;
+        }
+
+        html {
+            background-color: #d9d9d9;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        * {
+            font-family: "Nunito", sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- End custom js for this page-->
+    <script>
+        function getBaseUrl() {
+            let baseUrl;
+            if (window.location.protocol === "https:") {
+                baseUrl = "https://";
+            } else {
+                baseUrl = "http://";
+            }
+            baseUrl += window.location.host;
+            return baseUrl;
+        }
+
+        const baseUrl = getBaseUrl() + "/api/";
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RAFS.Core.DTO
+@using RAFS.Core.Models
+@model UserLoginDTO
+@inject SignInManager<AspUser> SignInManager
+@{
+    Layout = "_LoginLayout";
+    ViewBag.Title = "Đăng nhập";
+    var ExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+}
+
+<style>
+
+</style>
+
+<head>
+    <link rel="icon" type="image/png" href="~/Assets/HomePage/img/core-img/rafs.ico">
+    <title>Đăng nhập</title>
+</head>
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                        <div class="brand-logo">
+                            <a asp-action="Index" asp-controller="Home">
+                            <img src="~/Assets/HomePage/img/core-img/rafs-logo.png" alt="logo">
+                            </a>
+                        </div>
+                        <h4>Xin chào!</h4>
+                        <h6 class="font-weight-light">Hãy đăng nhập tài khoản để tiếp tục.</h6>
+                        <form class="pt-3" method="post">
+                            <div class="form-group text-danger">
+                                @Html.ValidationMessage("error")
+                            </div>
+                            
+                            @if (ViewBag.checkEmail != null)
+                            {
+                                <div class="text-success">
+                                    @ViewBag.checkEmail
+                                </div>
+                            }
+
+                            @if (ViewBag.accountDisabled != null)
+                            {
+                                <div class="text-danger">
+                                    @ViewBag.accountDisabled
+                                </div>
+                            }
+
+                            @if (ViewBag.farmDisabled != null)
+                            {
+                                <div class="text-danger">
+                                    @ViewBag.farmDisabled
+                                </div>
+                            }
+
+                            @if (ViewBag.farmNotAvailable != null)
+                            {
+                                <div class="text-danger">
+                                    @ViewBag.farmNotAvailable
+                                </div>
+                            }
+                                
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label">Tên người dùng:</label>
+                                <input type="text" asp-for="UserName" class="form-control form-control-lg" id="exampleInputEmail1" onkeydown="inputUserName(event)" placeholder="Tên người dùng">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label">Mật khẩu:</label>
+                                <input type="password" asp-for="Password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Mật khẩu">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">ĐĂNG NHẬP</button>
+                            </div>
+                            <div class="my-2 d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" asp-for="RememberMe" class="form-check-input">
+                                        Duy trì đăng nhập
+                                    </label>
+                                </div>
+                                <a href="/ForgotPassword" class="auth-link text-black">Quên mật khẩu</a>
+                            </div>
+                            <div class="mb-2">
+                                <button type="button" class="btn btn-block auth-form-btn" id="GoogleLogin">
+                                    <a href="/GoogleLogin?provider=Google&returnUrl=/"><i class="ti-google mr-2"></i>Đăng nhập bằng Google</a>
+                                    
+                                </button>
+                                
+
+                            </div>
+                            <div class="text-center mt-4 font-weight-light">
+                                Không có tài khoản? <a href="/Register" class="text-primary">Đăng ký</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<!-- container-scroller -->
+@section Scripts {
+    <script src="~/js/userValidation.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}
